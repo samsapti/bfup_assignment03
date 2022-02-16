@@ -5,7 +5,7 @@
 *)
 
 
-module Programfs
+module Program
 
 // Preparation
 type aExp =
@@ -36,22 +36,22 @@ type bExp =
 
 type word = (char * int) list
 
-let (.+.) a b = Add (a, b)
-let (.-.) a b = Sub (a, b)
-let (.*.) a b = Mul (a, b)
+let (.+.) a b = Add(a, b)
+let (.-.) a b = Sub(a, b)
+let (.*.) a b = Mul(a, b)
 let (~~) b = Not b
-let (.&&.) b1 b2 = Conj (b1, b2)
+let (.&&.) b1 b2 = Conj(b1, b2)
 let (.||.) b1 b2 = ~~(~~b1 .&&. ~~b2)
-let (.=.) a b = AEq (a, b)
-let (.<.) a b = ALt (a, b)
+let (.=.) a b = AEq(a, b)
+let (.<.) a b = ALt(a, b)
 let (.<>.) a b = ~~(a .=. b)
 let (.<=.) a b = a .<. b .||. ~~(a .<>. b)
 let (.>=.) a b = ~~(a .<. b)
 let (.>.) a b = ~~(a .=. b) .&&. (a .>=. b)
 
-let arithSingleLetterScore = PV (V "_pos_") .+. (V "_acc_")
-let arithDoubleLetterScore = ((N 2) .*. PV (V "_pos_")) .+. (V "_acc_")
-let arithTripleLetterScore = ((N 3) .*. PV (V "_pos_")) .+. (V "_acc_")
+let arithSingleLetterScore = PV(V "_pos_") .+. (V "_acc_")
+let arithDoubleLetterScore = ((N 2) .*. PV(V "_pos_")) .+. (V "_acc_")
+let arithTripleLetterScore = ((N 3) .*. PV(V "_pos_")) .+. (V "_acc_")
 let arithDoubleWordScore = N 2 .*. V "_acc_"
 let arithTripleWordScore = N 3 .*. V "_acc_"
 
@@ -83,7 +83,7 @@ let rec arithEvalState exp s =
     | PV _ -> failwith "Not Implemented"
 
 // Exercise 3.3
-let rec arithEval exp (w : word) s =
+let rec arithEval exp (w: word) s =
     match exp with
     | N a -> a
     | V a -> Map.tryFind a s |> Option.defaultValue 0
@@ -94,16 +94,18 @@ let rec arithEval exp (w : word) s =
     | Mul (a, b) -> arithEval a w s * arithEval b w s
 
 // Exercise 3.4
-let rec charEval exp (w : word) s =
+let rec charEval exp (w: word) s =
     match exp with
     | C c -> c
-    | ToUpper c -> System.Char.ToUpper (charEval c w s)
-    | ToLower c -> System.Char.ToLower (charEval c w s)
+    | ToUpper c -> System.Char.ToUpper(charEval c w s)
+    | ToLower c -> System.Char.ToLower(charEval c w s)
     | CV a -> fst w.[arithEval a w s]
 
 // Exercise 3.5
 let rec boolEval exp w s =
-    let isVowel c = (System.Char.ToLower >> List.contains) c ['a'; 'e'; 'i'; 'o'; 'u'; 'y']
+    let isVowel c =
+        (System.Char.ToLower >> List.contains) c [ 'a'; 'e'; 'i'; 'o'; 'u'; 'y' ]
+
     let eval f g x y = f (g x w s) (g y w s)
 
     match exp with
@@ -116,3 +118,4 @@ let rec boolEval exp w s =
     | IsDigit c -> charEval c w s |> System.Char.IsDigit
     | IsLetter c -> charEval c w s |> System.Char.IsLetter
     | IsVowel c -> charEval c w s |> isVowel
+
