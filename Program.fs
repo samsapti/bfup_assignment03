@@ -1,7 +1,7 @@
 ﻿(*
-    Functional Programming - Assignment 2
+    Functional Programming - Assignment 3
     Sam Al-Sapti (sals@itu.dk)
-    February 12th, 2022
+    February 16th, 2022
 *)
 
 
@@ -104,7 +104,7 @@ let rec charEval exp (w: word) s =
 // Exercise 3.5
 let rec boolEval exp w s =
     let isVowel c =
-        (System.Char.ToLower >> List.contains) c [ 'a'; 'e'; 'i'; 'o'; 'u'; 'y' ]
+        (System.Char.ToUpper >> List.contains) c [ 'A'; 'E'; 'I'; 'O'; 'U'; 'Y' ]
 
     let eval f g x y = f (g x w s) (g y w s)
 
@@ -119,3 +119,10 @@ let rec boolEval exp w s =
     | IsLetter c -> charEval c w s |> System.Char.IsLetter
     | IsVowel c -> charEval c w s |> isVowel
 
+
+(*
+    YELLOW
+*)
+
+// Exercise 3.6
+let isConsonant c = Not(IsVowel c)
