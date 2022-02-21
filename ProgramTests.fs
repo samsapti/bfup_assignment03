@@ -11,13 +11,6 @@ let a5 = N 4 .+. (N 2 .*. N 34)
 let a6 = V "x"
 let a7 = N 4 .+. (V "y" .-. V "z")
 
-let hello: word =
-    [ ('H', 4)
-      ('E', 1)
-      ('L', 1)
-      ('L', 1)
-      ('O', 1) ]
-
 // Exercise 3.1
 printf "arithEvalSimple a1 : %A\n" (arithEvalSimple a1)
 printf "arithEvalSimple a2 : %A\n" (arithEvalSimple a2)
@@ -171,6 +164,21 @@ printf
         (Map.ofList [ ("x", 3); ("y", 100) ]))
 
 // Exercise 3.8
+let containsNumbers =
+    stmntToSquareFun (
+        Seq(
+            Ass("_result_", V "_acc_"),
+            While(
+                V "i" .<. WL,
+                ITE(
+                    IsDigit(CV(V "i")),
+                    Seq(Ass("_result_", V "_result_" .*. N -1), Ass("i", WL)),
+                    Ass("i", V "i" .+. N 1)
+                )
+            )
+        )
+    )
+
 printf "singleLetterScore hello 0 0 : %A\n" (singleLetterScore hello 0 0)
 printf "doubleLetterScore hello 0 0 : %A\n" (doubleLetterScore hello 0 0)
 printf "tripleLetterScore hello 0 0 : %A\n" (tripleLetterScore hello 0 0)
@@ -180,3 +188,23 @@ printf "tripleLetterScore hello 0 42 : %A\n" (tripleLetterScore hello 0 42)
 printf "containsNumbers hello 5 50 : %A\n" (containsNumbers hello 5 50)
 printf "containsNumbers (('0', 100) :: hello) 5 50 : %A\n" (containsNumbers (('0', 100) :: hello) 5 50)
 printf "containsNumbers (hello @ [ ('0', 100) ]) 5 50 : %A\n" (containsNumbers (hello @ [ ('0', 100) ]) 5 50)
+
+// Exercise 3.9
+let helly: word =
+    [ ('H', 4)
+      ('E', 1)
+      ('L', 1)
+      ('L', 1)
+      ('Y', 1) ]
+
+(*
+    Create a square function oddConsonants of type squareFun that negates the accumulator if there are an
+    odd number of consonants in the word placed over the square.
+*)
+
+printf "stmntToSquareFun oddConsonants hello 0 1 : %A\n" (stmntToSquareFun oddConsonants hello 0 1) // should be -1
+printf "stmntToSquareFun oddConsonants helly 0 1 : %A\n" (stmntToSquareFun oddConsonants helly 0 1) // should be 1
+
+// Exercise 3.10
+printf "calculatePoints2 [ DLS; SLS; TLS; SLS; DWS ] hello : %A\n" (calculatePoints2 [ DLS; SLS; TLS; SLS; DWS ] hello)
+printf "calculatePoints2 [ DLS; DWS; TLS; TWS; DWS ] hello : %A\n" (calculatePoints2 [ DLS; DWS; TLS; TWS; DWS ] hello)
