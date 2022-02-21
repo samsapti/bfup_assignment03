@@ -142,3 +142,41 @@ printf
 printf
     "boolEval (isConsonant (CV(V \"x\"))) hello (Map.ofList [ (\"x\", 0) ]) %A\n"
     (boolEval (isConsonant (CV(V "x"))) hello (Map.ofList [ ("x", 1) ]))
+
+// Exercise 3.7
+printf "evalStmnt Skip [] Map.empty : %A\n" (evalStmnt Skip [] Map.empty)
+printf "evalStmnt (Ass(\"x\", N 5)) [] Map.empty : %A\n" (evalStmnt (Ass("x", N 5)) [] Map.empty)
+
+printf
+    "evalStmnt (Seq(Ass(\"x\", WL), Ass(\"y\", N 7))) hello Map.empty : %A\n"
+    (evalStmnt (Seq(Ass("x", WL), Ass("y", N 7))) hello Map.empty)
+
+printf
+    "evalStmnt (ITE(WL .>=. N 5, Ass(\"x\", N 1), Ass(\"x\", N 2))) hello Map.empty : %A\n"
+    (evalStmnt (ITE(WL .>=. N 5, Ass("x", N 1), Ass("x", N 2))) hello Map.empty)
+
+printf
+    "evalStmnt (ITE(WL .<. N 5, Ass(\"x\", N 1), Ass (\"x\", N 2))) hello Map.empty : %A\n"
+    (evalStmnt (ITE(WL .<. N 5, Ass("x", N 1), Ass("x", N 2))) hello Map.empty)
+
+printf
+    "evalStmnt (While(V \"x\" .<=. WL, Seq(Ass(\"y\", V \"y\" .+. V \"x\"), Ass(\"x\", V \"x\" .+. N 1)))) hello Map.empty : %A\n"
+    (evalStmnt (While(V "x" .<=. WL, Seq(Ass("y", V "y" .+. V "x"), Ass("x", V "x" .+. N 1)))) hello Map.empty)
+
+printf
+    "evalStmnt (While(V \"x\" .<=. WL, Seq(Ass(\"y\", V \"y\" .+. V \"x\"), Ass(\"x\", V \"x\" .+. N 1)))) hello (Map.ofList [ (\"x\", 3); (\"y\", 100) ]) : %A\n"
+    (evalStmnt
+        (While(V "x" .<=. WL, Seq(Ass("y", V "y" .+. V "x"), Ass("x", V "x" .+. N 1))))
+        hello
+        (Map.ofList [ ("x", 3); ("y", 100) ]))
+
+// Exercise 3.8
+printf "singleLetterScore hello 0 0 : %A\n" (singleLetterScore hello 0 0)
+printf "doubleLetterScore hello 0 0 : %A\n" (doubleLetterScore hello 0 0)
+printf "tripleLetterScore hello 0 0 : %A\n" (tripleLetterScore hello 0 0)
+printf "singleLetterScore hello 0 42 : %A\n" (singleLetterScore hello 0 42)
+printf "doubleLetterScore hello 0 42 : %A\n" (doubleLetterScore hello 0 42)
+printf "tripleLetterScore hello 0 42 : %A\n" (tripleLetterScore hello 0 42)
+printf "containsNumbers hello 5 50 : %A\n" (containsNumbers hello 5 50)
+printf "containsNumbers (('0', 100) :: hello) 5 50 : %A\n" (containsNumbers (('0', 100) :: hello) 5 50)
+printf "containsNumbers (hello @ [ ('0', 100) ]) 5 50 : %A\n" (containsNumbers (hello @ [ ('0', 100) ]) 5 50)
